@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Onboarding from './pages/Onboarding.jsx'
-import Home from './pages/Home.jsx'
+import Livescores from './pages/Livescores.jsx'
 import Placeholder from './pages/Placeholder.jsx'
 import Chat from './pages/Chat.jsx'
 import BottomNav from './components/BottomNav.jsx'
@@ -25,7 +25,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/onboarding" element={<Onboarding />} />
-      <Route path="/" element={<ProtectedLayout><Home /></ProtectedLayout>} />
+      <Route path="/" element={<ProtectedLayout><Livescores /></ProtectedLayout>} />
       <Route path="/fixtures" element={<ProtectedLayout><Placeholder title="Fixtures" /></ProtectedLayout>} />
       <Route path="/lineups" element={<ProtectedLayout><Placeholder title="Lineups" /></ProtectedLayout>} />
       <Route path="/transfers" element={<ProtectedLayout><Placeholder title="Transfers" /></ProtectedLayout>} />
