@@ -1,4 +1,5 @@
 .onboarding-screen {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -7,21 +8,77 @@
   min-height: 100vh;
   padding: 24px;
   box-sizing: border-box;
-  background: var(--statie-deep-violet);
-  color: var(--statie-ghost-white);
+  color: #fff;
+  overflow: hidden;
+  background: linear-gradient(160deg, #7C3AED, #9F67FF, #7C3AED);
+  background-size: 200% 200%;
+  animation: gradientShift 8s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+.pulse-bg {
+  position: absolute;
+  top: 50%;
+  left: -10%;
+  width: 120%;
+  height: 100px;
+  transform: translateY(-50%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.pulse-line {
+  stroke-dasharray: 500;
+  stroke-dashoffset: 500;
+  animation: drawPulse 3s ease-in-out infinite;
+}
+
+@keyframes drawPulse {
+  0% { stroke-dashoffset: 500; }
+  60% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -500; }
+}
+
+.slide-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  animation: popIn 0.4s ease;
+}
+
+.slide-icon {
+  width: 34px;
+  height: 34px;
+  color: #fff;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 .onboarding-dots {
   display: flex;
   gap: 6px;
   margin-bottom: 24px;
+  z-index: 1;
 }
 
 .dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--statie-pulse-lilac);
+  background: #fff;
   opacity: 0.3;
 }
 
@@ -29,24 +86,31 @@
   opacity: 1;
 }
 
+h1, p {
+  z-index: 1;
+}
+
 .primary-btn {
   margin-top: 24px;
   padding: 14px 32px;
   border-radius: 999px;
   border: none;
-  background: var(--statie-purple);
-  color: #fff;
+  background: #fff;
+  color: #7C3AED;
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
+  z-index: 1;
 }
 
 .text-btn {
   margin-top: 12px;
   background: none;
   border: none;
-  color: var(--statie-pulse-lilac);
+  color: rgba(255, 255, 255, 0.8);
   font-size: 14px;
   cursor: pointer;
+  z-index: 1;
 }
 
 .team-grid {
@@ -55,20 +119,21 @@
   gap: 10px;
   justify-content: center;
   margin: 24px 0;
+  z-index: 1;
 }
 
 .team-chip {
   padding: 10px 16px;
   border-radius: 999px;
-  border: 1px solid var(--statie-pulse-lilac);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   background: transparent;
-  color: var(--statie-ghost-white);
+  color: #fff;
   cursor: pointer;
   font-size: 14px;
 }
 
 .team-chip.selected {
-  background: var(--statie-purple);
-  color: #fff;
-  border-color: var(--statie-purple);
+  background: #fff;
+  color: #7C3AED;
+  border-color: #fff;
 }

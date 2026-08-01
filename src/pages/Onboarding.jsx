@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { FiCalendar, FiTarget, FiMessageCircle, FiBell } from 'react-icons/fi'
 import './onboarding.css'
 
 const SLIDES = [
-  { title: 'Live fixtures & lineups', text: 'Real-time fixtures, lineups, and scores for the leagues you care about.' },
-  { title: 'Smart tips & predictions', text: 'Statie analyzes the data and gives you tips you can actually use.' },
-  { title: 'Chat with Statie', text: 'Ask questions, get explanations, and talk football with your own AI agent.' },
+  { title: 'Live fixtures & lineups', text: 'Real-time fixtures, lineups, and scores for the leagues you care about.', Icon: FiCalendar },
+  { title: 'Smart tips & predictions', text: 'Statie analyzes the data and gives you tips you can actually use.', Icon: FiTarget },
+  { title: 'Chat with Statie', text: 'Ask questions, get explanations, and talk football with your own AI agent.', Icon: FiMessageCircle },
 ]
 
 const TEAMS = [
@@ -49,14 +50,31 @@ export default function Onboarding() {
     finishOnboarding(granted)
   }
 
+  const PulseBackground = () => (
+    <svg className="pulse-bg" viewBox="0 0 400 100" preserveAspectRatio="none">
+      <polyline
+        className="pulse-line"
+        points="0,50 60,50 80,20 100,80 120,50 400,50"
+        fill="none"
+        stroke="rgba(255,255,255,0.25)"
+        strokeWidth="2"
+      />
+    </svg>
+  )
+
   if (step === 0) {
     const slide = SLIDES[slideIndex]
+    const SlideIcon = slide.Icon
     return (
       <div className="onboarding-screen">
+        <PulseBackground />
         <div className="onboarding-dots">
           {SLIDES.map((_, i) => (
             <span key={i} className={`dot ${i === slideIndex ? 'active' : ''}`} />
           ))}
+        </div>
+        <div className="slide-icon-wrap">
+          <SlideIcon className="slide-icon" key={slideIndex} />
         </div>
         <h1>{slide.title}</h1>
         <p>{slide.text}</p>
@@ -73,6 +91,7 @@ export default function Onboarding() {
   if (step === 1) {
     return (
       <div className="onboarding-screen">
+        <PulseBackground />
         <h1>Pick your teams</h1>
         <p>Statie will personalize fixtures, news, and tips around these.</p>
         <div className="team-grid">
@@ -94,6 +113,10 @@ export default function Onboarding() {
 
   return (
     <div className="onboarding-screen">
+      <PulseBackground />
+      <div className="slide-icon-wrap">
+        <FiBell className="slide-icon" />
+      </div>
       <h1>Stay in the loop</h1>
       <p>Turn on notifications for goal alerts, lineup drops, and daily tips.</p>
       <button className="primary-btn" onClick={requestNotifications}>Enable notifications</button>
