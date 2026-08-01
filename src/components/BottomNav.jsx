@@ -2,12 +2,12 @@ import { NavLink } from 'react-router-dom'
 import './bottomnav.css'
 
 const LINKS = [
-  { to: '/', label: 'Home' },
-  { to: '/fixtures', label: 'Fixtures' },
-  { to: '/lineups', label: 'Lineups' },
-  { to: '/transfers', label: 'Transfers' },
-  { to: '/betting-tips', label: 'Tips' },
-  { to: '/chat', label: 'Chat' },
+  { to: '/', label: 'Home', icon: '🏠' },
+  { to: '/fixtures', label: 'Fixtures', icon: '📅' },
+  { to: '/lineups', label: 'Lineups', icon: '⚽' },
+  { to: '/transfers', label: 'Transfers', icon: '🔁' },
+  { to: '/betting-tips', label: 'Tips', icon: '🎯' },
+  { to: '/chat', label: 'Chat', icon: '💬' },
 ]
 
 export default function BottomNav() {
@@ -20,7 +20,8 @@ export default function BottomNav() {
           className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}
           end={link.to === '/'}
         >
-          {link.label}
+          <span className="nav-icon">{link.icon}</span>
+          <span className="nav-label">{link.label}</span>
         </NavLink>
       ))}
     </nav>
