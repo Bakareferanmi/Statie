@@ -21,27 +21,25 @@
   100% { background-position: 0% 0%; }
 }
 
-.pulse-bg {
+.floating-ball-wrap {
   position: absolute;
-  top: 50%;
-  left: -10%;
-  width: 120%;
-  height: 100px;
-  transform: translateY(-50%);
-  opacity: 0.6;
+  top: -60px;
+  right: -60px;
   pointer-events: none;
+  opacity: 0.15;
 }
 
-.pulse-line {
-  stroke-dasharray: 500;
-  stroke-dashoffset: 500;
-  animation: drawPulse 3s ease-in-out infinite;
+.floating-ball {
+  width: 260px;
+  height: 260px;
+  color: #fff;
+  animation: floatSpin 12s linear infinite;
 }
 
-@keyframes drawPulse {
-  0% { stroke-dashoffset: 500; }
-  60% { stroke-dashoffset: 0; }
-  100% { stroke-dashoffset: -500; }
+@keyframes floatSpin {
+  0% { transform: rotate(0deg) translateY(0px); }
+  50% { transform: rotate(180deg) translateY(20px); }
+  100% { transform: rotate(360deg) translateY(0px); }
 }
 
 .slide-icon-wrap {

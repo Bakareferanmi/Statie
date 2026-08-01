@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FiCalendar, FiTarget, FiMessageCircle, FiBell } from 'react-icons/fi'
+import { GiSoccerBall } from 'react-icons/gi'
 import './onboarding.css'
 
 const SLIDES = [
@@ -50,16 +51,10 @@ export default function Onboarding() {
     finishOnboarding(granted)
   }
 
-  const PulseBackground = () => (
-    <svg className="pulse-bg" viewBox="0 0 400 100" preserveAspectRatio="none">
-      <polyline
-        className="pulse-line"
-        points="0,50 60,50 80,20 100,80 120,50 400,50"
-        fill="none"
-        stroke="rgba(255,255,255,0.25)"
-        strokeWidth="2"
-      />
-    </svg>
+  const FloatingBall = () => (
+    <div className="floating-ball-wrap">
+      <GiSoccerBall className="floating-ball" />
+    </div>
   )
 
   if (step === 0) {
@@ -67,7 +62,7 @@ export default function Onboarding() {
     const SlideIcon = slide.Icon
     return (
       <div className="onboarding-screen">
-        <PulseBackground />
+        <FloatingBall />
         <div className="onboarding-dots">
           {SLIDES.map((_, i) => (
             <span key={i} className={`dot ${i === slideIndex ? 'active' : ''}`} />
@@ -91,7 +86,7 @@ export default function Onboarding() {
   if (step === 1) {
     return (
       <div className="onboarding-screen">
-        <PulseBackground />
+        <FloatingBall />
         <h1>Pick your teams</h1>
         <p>Statie will personalize fixtures, news, and tips around these.</p>
         <div className="team-grid">
@@ -113,7 +108,7 @@ export default function Onboarding() {
 
   return (
     <div className="onboarding-screen">
-      <PulseBackground />
+      <FloatingBall />
       <div className="slide-icon-wrap">
         <FiBell className="slide-icon" />
       </div>
