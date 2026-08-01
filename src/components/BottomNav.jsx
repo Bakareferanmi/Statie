@@ -1,27 +1,28 @@
 import { NavLink } from 'react-router-dom'
+import { FiHome, FiCalendar, FiUsers, FiRepeat, FiTarget, FiMessageCircle } from 'react-icons/fi'
 import './bottomnav.css'
 
 const LINKS = [
-  { to: '/', label: 'Home', icon: '🏠' },
-  { to: '/fixtures', label: 'Fixtures', icon: '📅' },
-  { to: '/lineups', label: 'Lineups', icon: '⚽' },
-  { to: '/transfers', label: 'Transfers', icon: '🔁' },
-  { to: '/betting-tips', label: 'Tips', icon: '🎯' },
-  { to: '/chat', label: 'Chat', icon: '💬' },
+  { to: '/', label: 'Home', Icon: FiHome },
+  { to: '/fixtures', label: 'Fixtures', Icon: FiCalendar },
+  { to: '/lineups', label: 'Lineups', Icon: FiUsers },
+  { to: '/transfers', label: 'Transfers', Icon: FiRepeat },
+  { to: '/betting-tips', label: 'Tips', Icon: FiTarget },
+  { to: '/chat', label: 'Chat', Icon: FiMessageCircle },
 ]
 
 export default function BottomNav() {
   return (
     <nav className="bottom-nav">
-      {LINKS.map((link) => (
+      {LINKS.map(({ to, label, Icon }) => (
         <NavLink
-          key={link.to}
-          to={link.to}
+          key={to}
+          to={to}
           className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}
-          end={link.to === '/'}
+          end={to === '/'}
         >
-          <span className="nav-icon">{link.icon}</span>
-          <span className="nav-label">{link.label}</span>
+          <Icon className="nav-icon" />
+          <span className="nav-label">{label}</span>
         </NavLink>
       ))}
     </nav>
