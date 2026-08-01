@@ -30,3 +30,9 @@ export async function getDailyTip(competition = 'PL') {
   if (!res.ok) throw new Error('Failed to fetch tip')
   return res.json()
 }
+
+export async function getLineups(matchId) {
+  const res = await fetch(`${API_URL}/lineups/${matchId}`)
+  if (!res.ok) throw new Error('Failed to fetch lineup')
+  return res.json()
+}

@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import Onboarding from './pages/Onboarding.jsx'
 import Livescores from './pages/Livescores.jsx'
 import Fixtures from './pages/Fixtures.jsx'
+import Lineups from './pages/Lineups.jsx'
 import BettingTips from './pages/BettingTips.jsx'
 import Placeholder from './pages/Placeholder.jsx'
 import Chat from './pages/Chat.jsx'
@@ -29,7 +30,7 @@ export default function App() {
       <Route path="/onboarding" element={<Onboarding />} />
       <Route path="/" element={<ProtectedLayout><Livescores /></ProtectedLayout>} />
       <Route path="/fixtures" element={<ProtectedLayout><Fixtures /></ProtectedLayout>} />
-      <Route path="/lineups" element={<ProtectedLayout><Placeholder title="Lineups" /></ProtectedLayout>} />
+      <Route path="/lineups" element={<ProtectedLayout><Lineups /></ProtectedLayout>} />
       <Route path="/transfers" element={<ProtectedLayout><Placeholder title="Transfers" /></ProtectedLayout>} />
       <Route path="/betting-tips" element={<ProtectedLayout><BettingTips /></ProtectedLayout>} />
       <Route path="/chat" element={<ProtectedLayout><Chat /></ProtectedLayout>} />
