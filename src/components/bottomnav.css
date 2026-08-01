@@ -7,7 +7,7 @@
   justify-content: space-around;
   align-items: center;
   background: #fff;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--statie-ghost-white);
   padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
   z-index: 10;
 }
@@ -23,7 +23,8 @@
   padding: 6px 10px;
   border-radius: 12px;
   text-decoration: none;
-  color: #999;
+  color: var(--statie-text-secondary);
+  font-weight: 500;
 }
 
 .nav-icon {
