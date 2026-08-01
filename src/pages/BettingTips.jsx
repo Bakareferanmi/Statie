@@ -1,44 +1,33 @@
+import { useState, useEffect } from 'react'
 import { FiTarget } from 'react-icons/fi'
+import { getDailyTip } from '../api.js'
 import './bettingtips.css'
 
-const MOCK_TIPS = [
-  {
-    match: 'Man City vs Liverpool',
-    competition: 'Premier League',
-    tip: 'Both Teams to Score',
-    confidence: 'High',
-    odds: '1.65',
-  },
-  {
-    match: 'PSG vs Bayern Munich',
-    competition: 'Champions League',
-    tip: 'Over 2.5 Goals',
-    confidence: 'High',
-    odds: '1.80',
-  },
-  {
-    match: 'Barcelona vs Atletico Madrid',
-    competition: 'La Liga',
-    tip: 'Barcelona to Win',
-    confidence: 'Medium',
-    odds: '1.95',
-  },
-  {
-    match: 'Juventus vs AC Milan',
-    competition: 'Serie A',
-    tip: 'Draw',
-    confidence: 'Low',
-    odds: '3.20',
-  },
-]
-
-const CONFIDENCE_CLASS = {
-  High: 'high',
-  Medium: 'medium',
-  Low: 'low',
-}
-
 export default function BettingTips() {
+  const [tip, setTip] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    async function load() {
+      try {
+        setLoading(true)
+        const data = await getDailyTip()
+        if (data.error) {
+          setError(data.error)
+        } else {
+          setTip(data)
+          setError(null)
+        }
+      } catch (err) {
+        setError('Could not load tip. The server may be waking up — try again shortly.')
+      } finally {
+        setLoading(false)
+      }
+    }
+    load()
+  }, [])
+
   return (
     <div className="page tips-page">
       <div className="tp-header">
@@ -46,27 +35,20 @@ export default function BettingTips() {
         <h1>Betting Tips</h1>
       </div>
 
-      <div className="tp-list">
-        {MOCK_TIPS.map((t, i) => (
-          <div key={i} className="tp-card">
-            <div className="tp-card-top">
-              <span className="tp-competition">{t.competition}</span>
-              <span className={`tp-confidence ${CONFIDENCE_CLASS[t.confidence]}`}>
-                {t.confidence}
-              </span>
-            </div>
-            <span className="tp-match">{t.match}</span>
-            <div className="tp-card-bottom">
-              <span className="tp-tip">{t.tip}</span>
-              <span className="tp-odds">{t.odds}</span>
-            </div>
-          </div>
-        ))}
-      </div>
+      {loading && <p>Generating today's tip...</p>}
+      {error && <p className="tp-error">{error}</p>}
 
-      <p className="tp-note">
-        Tips are for informational purposes only. Bet responsibly and within your means.
-      </p>
+      {!loading && !error && tip && (
+        <div className="tp-card">
+          <span className="tp-match">{tip.match}</span>
+          <p className="tp-text">{tip.tip}</p>
+          <div className="tp-confidence-bar">
+            <div className="tp-confidence-fill" style={{ width: `${tip.confidence}%` }} />
+          </div>
+          <span className="tp-confidence-label">{tip.confidence}% confidence</span>
+          <p className="tp-disclaimer">Not guaranteed advice — bet responsibly.</p>
+        </div>
+      )}
     </div>
   )
 }

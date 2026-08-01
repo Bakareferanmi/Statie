@@ -1,39 +1,38 @@
+import { useState, useEffect } from 'react'
 import { FiCalendar } from 'react-icons/fi'
-import { useState, useMemo } from 'react'
-import { MATCHES, getCompetitions } from '../data/matches'
-import { getFavorites, toggleFavorite } from '../utils/favorites'
-import FilterBar from '../components/FilterBar.jsx'
-import MatchCard from '../components/MatchCard.jsx'
+import { getFixtures } from '../api.js'
 import './fixtures.css'
 
+function formatDate(utcDate) {
+  return new Date(utcDate).toLocaleString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  })
+}
+
 export default function Fixtures() {
-  const [competition, setCompetition] = useState('All')
-  const [search, setSearch] = useState('')
-  const [favorites, setFavorites] = useState(getFavorites())
+  const [fixtures, setFixtures] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-  function handleToggleFavorite(team) {
-    setFavorites(toggleFavorite(team))
-  }
-
-  const filtered = useMemo(() => {
-    return MATCHES.filter((m) => {
-      const matchesCompetition = competition === 'All' || m.competition === competition
-      const matchesSearch =
-        search.trim() === '' ||
-        m.home.toLowerCase().includes(search.toLowerCase()) ||
-        m.away.toLowerCase().includes(search.toLowerCase())
-      return matchesCompetition && matchesSearch
-    })
-  }, [competition, search])
-
-  const grouped = useMemo(() => {
-    const map = {}
-    filtered.forEach((m) => {
-      if (!map[m.day]) map[m.day] = []
-      map[m.day].push(m)
-    })
-    return map
-  }, [filtered])
+  useEffect(() => {
+    async function load() {
+      try {
+        setLoading(true)
+        const data = await getFixtures()
+        setFixtures(data)
+        setError(null)
+      } catch (err) {
+        setError('Could not load fixtures. The server may be waking up — try again shortly.')
+      } finally {
+        setLoading(false)
+      }
+    }
+    load()
+  }, [])
 
   return (
     <div className="page fixtures-page">
@@ -42,29 +41,25 @@ export default function Fixtures() {
         <h1>Fixtures</h1>
       </div>
 
-      <FilterBar
-        competitions={getCompetitions()}
-        activeCompetition={competition}
-        onCompetitionChange={setCompetition}
-        search={search}
-        onSearchChange={setSearch}
-      />
+      {loading && <p>Loading fixtures...</p>}
+      {error && <p className="fx-error">{error}</p>}
 
-      {Object.entries(grouped).map(([day, matches]) => (
-        <section key={day} className="fx-section">
-          <span className="fx-label">{day}</span>
-          {matches.map((m) => (
-            <MatchCard
-              key={m.id}
-              match={m}
-              favorites={favorites}
-              onToggleFavorite={handleToggleFavorite}
-            />
+      {!loading && !error && (
+        <div className="fx-list">
+          {fixtures.length === 0 && <p className="fx-empty">No upcoming fixtures found.</p>}
+          {fixtures.map((m) => (
+            <div key={m.id} className="fx-card">
+              <span className="fx-competition">{m.competition?.name}</span>
+              <div className="fx-match-row">
+                <span className="fx-team">{m.homeTeam?.name}</span>
+                <span className="fx-vs">vs</span>
+                <span className="fx-team">{m.awayTeam?.name}</span>
+              </div>
+              <span className="fx-time">{formatDate(m.utcDate)}</span>
+            </div>
           ))}
-        </section>
-      ))}
-
-      {filtered.length === 0 && <p className="fx-empty">No fixtures match your filters.</p>}
+        </div>
+      )}
     </div>
   )
 }

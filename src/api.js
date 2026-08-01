@@ -24,3 +24,9 @@ export async function sendChatMessage(message) {
   const data = await res.json()
   return data.reply
 }
+
+export async function getDailyTip(competition = 'PL') {
+  const res = await fetch(`${API_URL}/tips/?competition=${competition}`)
+  if (!res.ok) throw new Error('Failed to fetch tip')
+  return res.json()
+}

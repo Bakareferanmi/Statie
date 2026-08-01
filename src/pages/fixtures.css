@@ -8,7 +8,6 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 4px;
 }
 
 .fx-header-icon {
@@ -17,18 +16,10 @@
   color: var(--statie-purple);
 }
 
-.fx-section {
+.fx-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.fx-label {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: var(--statie-text-secondary);
 }
 
 .fx-card {
@@ -43,8 +34,8 @@
 
 .fx-competition {
   font-size: 11px;
-  color: var(--statie-text-secondary);
   font-weight: 500;
+  color: var(--statie-text-secondary);
 }
 
 .fx-match-row {
@@ -65,16 +56,23 @@
   text-align: right;
 }
 
+.fx-vs {
+  font-size: 12px;
+  color: var(--statie-text-secondary);
+}
+
 .fx-time {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--statie-purple);
-  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--statie-text-secondary);
+}
+
+.fx-error {
+  color: #E11D48;
+  font-size: 14px;
 }
 
 .fx-empty {
-  text-align: center;
   font-size: 13px;
   color: var(--statie-text-secondary);
-  padding: 20px 0;
 }
