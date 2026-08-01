@@ -1,11 +1,10 @@
 import { NavLink } from 'react-router-dom'
-import { FiHome, FiCalendar, FiUsers, FiTarget, FiMessageCircle } from 'react-icons/fi'
+import { FiCalendar, FiUsers, FiTarget, FiMessageCircle } from 'react-icons/fi'
 import { GiSoccerBall } from 'react-icons/gi'
 import './bottomnav.css'
 
 const LINKS = [
-  { to: '/', label: 'Home', Icon: FiHome },
-  { to: '/livescores', label: 'Livescores', Icon: GiSoccerBall },
+  { to: '/', label: 'Livescores', Icon: GiSoccerBall },
   { to: '/fixtures', label: 'Fixtures', Icon: FiCalendar },
   { to: '/lineups', label: 'Lineups', Icon: FiUsers },
   { to: '/betting-tips', label: 'Tips', Icon: FiTarget },
