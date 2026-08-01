@@ -71,3 +71,10 @@
   color: var(--statie-purple);
   white-space: nowrap;
 }
+
+.fx-empty {
+  text-align: center;
+  font-size: 13px;
+  color: var(--statie-text-secondary);
+  padding: 20px 0;
+}

@@ -104,3 +104,9 @@
   color: var(--statie-text-secondary);
 }
 
+.ls-empty {
+  text-align: center;
+  font-size: 13px;
+  color: var(--statie-text-secondary);
+  padding: 20px 0;
+}

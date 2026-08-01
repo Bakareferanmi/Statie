@@ -1,22 +1,40 @@
 import { FiCalendar } from 'react-icons/fi'
+import { useState, useMemo } from 'react'
+import { MATCHES, getCompetitions } from '../data/matches'
+import { getFavorites, toggleFavorite } from '../utils/favorites'
+import FilterBar from '../components/FilterBar.jsx'
+import MatchCard from '../components/MatchCard.jsx'
 import './fixtures.css'
 
-const MOCK_FIXTURES = {
-  Today: [
-    { home: 'Man City', away: 'Liverpool', time: '7:45 PM', competition: 'Premier League' },
-    { home: 'PSG', away: 'Bayern Munich', time: '9:00 PM', competition: 'Champions League' },
-  ],
-  Tomorrow: [
-    { home: 'Barcelona', away: 'Atletico Madrid', time: '4:00 PM', competition: 'La Liga' },
-    { home: 'Juventus', away: 'AC Milan', time: '6:30 PM', competition: 'Serie A' },
-    { home: 'Dortmund', away: 'Leverkusen', time: '8:00 PM', competition: 'Bundesliga' },
-  ],
-  'Sat, Aug 8': [
-    { home: 'Arsenal', away: 'Tottenham', time: '12:30 PM', competition: 'Premier League' },
-  ],
-}
-
 export default function Fixtures() {
+  const [competition, setCompetition] = useState('All')
+  const [search, setSearch] = useState('')
+  const [favorites, setFavorites] = useState(getFavorites())
+
+  function handleToggleFavorite(team) {
+    setFavorites(toggleFavorite(team))
+  }
+
+  const filtered = useMemo(() => {
+    return MATCHES.filter((m) => {
+      const matchesCompetition = competition === 'All' || m.competition === competition
+      const matchesSearch =
+        search.trim() === '' ||
+        m.home.toLowerCase().includes(search.toLowerCase()) ||
+        m.away.toLowerCase().includes(search.toLowerCase())
+      return matchesCompetition && matchesSearch
+    })
+  }, [competition, search])
+
+  const grouped = useMemo(() => {
+    const map = {}
+    filtered.forEach((m) => {
+      if (!map[m.day]) map[m.day] = []
+      map[m.day].push(m)
+    })
+    return map
+  }, [filtered])
+
   return (
     <div className="page fixtures-page">
       <div className="fx-header">
@@ -24,21 +42,29 @@ export default function Fixtures() {
         <h1>Fixtures</h1>
       </div>
 
-      {Object.entries(MOCK_FIXTURES).map(([day, matches]) => (
+      <FilterBar
+        competitions={getCompetitions()}
+        activeCompetition={competition}
+        onCompetitionChange={setCompetition}
+        search={search}
+        onSearchChange={setSearch}
+      />
+
+      {Object.entries(grouped).map(([day, matches]) => (
         <section key={day} className="fx-section">
           <span className="fx-label">{day}</span>
-          {matches.map((m, i) => (
-            <div key={i} className="fx-card">
-              <span className="fx-competition">{m.competition}</span>
-              <div className="fx-match-row">
-                <span className="fx-team">{m.home}</span>
-                <span className="fx-time">{m.time}</span>
-                <span className="fx-team">{m.away}</span>
-              </div>
-            </div>
+          {matches.map((m) => (
+            <MatchCard
+              key={m.id}
+              match={m}
+              favorites={favorites}
+              onToggleFavorite={handleToggleFavorite}
+            />
           ))}
         </section>
       ))}
+
+      {filtered.length === 0 && <p className="fx-empty">No fixtures match your filters.</p>}
     </div>
   )
 }

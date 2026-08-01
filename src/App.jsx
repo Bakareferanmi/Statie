@@ -4,6 +4,7 @@ import Livescores from './pages/Livescores.jsx'
 import Fixtures from './pages/Fixtures.jsx'
 import Lineups from './pages/Lineups.jsx'
 import BettingTips from './pages/BettingTips.jsx'
+import MatchDetail from './pages/MatchDetail.jsx'
 import Chat from './pages/Chat.jsx'
 import BottomNav from './components/BottomNav.jsx'
 
@@ -31,6 +32,7 @@ export default function App() {
       <Route path="/fixtures" element={<ProtectedLayout><Fixtures /></ProtectedLayout>} />
       <Route path="/lineups" element={<ProtectedLayout><Lineups /></ProtectedLayout>} />
       <Route path="/betting-tips" element={<ProtectedLayout><BettingTips /></ProtectedLayout>} />
+      <Route path="/match/:id" element={<ProtectedLayout><MatchDetail /></ProtectedLayout>} />
       <Route path="/chat" element={<ProtectedLayout><Chat /></ProtectedLayout>} />
     </Routes>
   )

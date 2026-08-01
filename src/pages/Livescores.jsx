@@ -1,18 +1,35 @@
 import { FiCircle } from 'react-icons/fi'
+import { useState, useMemo } from 'react'
 import logo from '../assets/statie-logo.png'
+import { MATCHES, getCompetitions } from '../data/matches'
+import { getFavorites, toggleFavorite } from '../utils/favorites'
+import FilterBar from '../components/FilterBar.jsx'
+import MatchCard from '../components/MatchCard.jsx'
 import './livescores.css'
 
-const MOCK_LIVE = [
-  { home: 'Arsenal', away: 'Chelsea', homeScore: 1, awayScore: 0, minute: "63'", competition: 'Premier League' },
-  { home: 'Real Madrid', away: 'Barcelona', homeScore: 2, awayScore: 2, minute: "78'", competition: 'La Liga' },
-]
-
-const MOCK_UPCOMING = [
-  { home: 'Man City', away: 'Liverpool', time: 'Today, 7:45 PM', competition: 'Premier League' },
-  { home: 'PSG', away: 'Bayern Munich', time: 'Today, 9:00 PM', competition: 'Champions League' },
-]
-
 export default function Livescores() {
+  const [competition, setCompetition] = useState('All')
+  const [search, setSearch] = useState('')
+  const [favorites, setFavorites] = useState(getFavorites())
+
+  function handleToggleFavorite(team) {
+    setFavorites(toggleFavorite(team))
+  }
+
+  const filtered = useMemo(() => {
+    return MATCHES.filter((m) => {
+      const matchesCompetition = competition === 'All' || m.competition === competition
+      const matchesSearch =
+        search.trim() === '' ||
+        m.home.toLowerCase().includes(search.toLowerCase()) ||
+        m.away.toLowerCase().includes(search.toLowerCase())
+      return matchesCompetition && matchesSearch
+    })
+  }, [competition, search])
+
+  const live = filtered.filter((m) => m.status === 'live')
+  const upcoming = filtered.filter((m) => m.status === 'upcoming')
+
   return (
     <div className="page livescores-page">
       <div className="ls-header">
@@ -20,35 +37,45 @@ export default function Livescores() {
         <h1>Livescores</h1>
       </div>
 
-      <section className="ls-section">
-        <span className="ls-label live"><FiCircle /> Live now</span>
-        {MOCK_LIVE.map((m, i) => (
-          <div key={i} className="ls-card live-card">
-            <span className="ls-competition">{m.competition}</span>
-            <div className="ls-match-row">
-              <span className="ls-team">{m.home}</span>
-              <span className="ls-score">{m.homeScore} - {m.awayScore}</span>
-              <span className="ls-team">{m.away}</span>
-            </div>
-            <span className="ls-minute">{m.minute}</span>
-          </div>
-        ))}
-      </section>
+      <FilterBar
+        competitions={getCompetitions()}
+        activeCompetition={competition}
+        onCompetitionChange={setCompetition}
+        search={search}
+        onSearchChange={setSearch}
+      />
 
-      <section className="ls-section">
-        <span className="ls-label">Upcoming today</span>
-        {MOCK_UPCOMING.map((m, i) => (
-          <div key={i} className="ls-card">
-            <span className="ls-competition">{m.competition}</span>
-            <div className="ls-match-row">
-              <span className="ls-team">{m.home}</span>
-              <span className="ls-vs">vs</span>
-              <span className="ls-team">{m.away}</span>
-            </div>
-            <span className="ls-time">{m.time}</span>
-          </div>
-        ))}
-      </section>
+      {live.length > 0 && (
+        <section className="ls-section">
+          <span className="ls-label live">
+            <FiCircle /> Live now
+          </span>
+          {live.map((m) => (
+            <MatchCard
+              key={m.id}
+              match={m}
+              favorites={favorites}
+              onToggleFavorite={handleToggleFavorite}
+            />
+          ))}
+        </section>
+      )}
+
+      {upcoming.length > 0 && (
+        <section className="ls-section">
+          <span className="ls-label">Upcoming</span>
+          {upcoming.map((m) => (
+            <MatchCard
+              key={m.id}
+              match={m}
+              favorites={favorites}
+              onToggleFavorite={handleToggleFavorite}
+            />
+          ))}
+        </section>
+      )}
+
+      {filtered.length === 0 && <p className="ls-empty">No matches match your filters.</p>}
     </div>
   )
 }
