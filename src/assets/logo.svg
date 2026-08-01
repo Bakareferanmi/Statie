@@ -1,0 +1,43 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <rect width="120" height="120" rx="28" fill="#2A1454"/>
+  <path
+    d="M85 34
+       C85 34 70 34 60 34
+       C48 34 42 40 42 48
+       C42 56 50 58 58 60
+       L60 60.5
+       C62 61 63 63 61 65
+       L48 78
+       C40 86 34 90 34 90
+       L34 78
+       C34 78 44 78 52 78
+       C64 78 70 72 70 64
+       C70 56 62 54 54 52
+       L52 51.5
+       C50 51 49 49 51 47
+       L64 34
+       C72 26 78 22 85 22
+       L85 34 Z"
+    fill="none"
+    stroke="#B98CFF"
+    stroke-width="0"
+  />
+  <!-- Pulse-S main stroke -->
+  <path
+    d="M82 36
+       C82 36 68 36 58 36
+       C48 36 43 41 43 48
+       C43 55 50 57 58 59
+       L74 63
+       C82 65 86 69 86 76
+       C86 84 79 88 68 88
+       C58 88 44 88 44 88
+       M52 44 L58 50 L52 56 L60 52
+       M62 72 L68 78 L62 84 L70 80"
+    fill="none"
+    stroke="#B98CFF"
+    stroke-width="7"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>

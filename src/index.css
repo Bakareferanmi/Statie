@@ -1,3 +1,12 @@
+:root {
+  --statie-deep-violet: #2A1454;
+  --statie-purple: #7C3AED;
+  --statie-pulse-lilac: #B98CFF;
+  --statie-near-black: #14101F;
+  --statie-ghost-white: #F6F3FF;
+  --statie-signal-green: #34D399;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -5,8 +14,8 @@
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #fafafa;
-  color: #111;
+  background: var(--statie-ghost-white);
+  color: var(--statie-near-black);
 }
 
 .page {
