@@ -104,9 +104,12 @@
   color: var(--statie-text-secondary);
 }
 
+.ls-error {
+  color: #E11D48;
+  font-size: 14px;
+}
+
 .ls-empty {
-  text-align: center;
   font-size: 13px;
   color: var(--statie-text-secondary);
-  padding: 20px 0;
 }
