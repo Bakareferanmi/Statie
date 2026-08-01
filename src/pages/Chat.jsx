@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { FiSend } from 'react-icons/fi'
 import logo from '../assets/statie-logo.png'
+import { sendChatMessage } from '../api.js'
 import './chat.css'
 
 export default function Chat() {
@@ -8,25 +9,31 @@ export default function Chat() {
     { role: 'assistant', text: "Hey, I'm Statie. Ask me about fixtures, lineups, or today's tips." },
   ])
   const [input, setInput] = useState('')
+  const [sending, setSending] = useState(false)
   const bottomRef = useRef(null)
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  function sendMessage() {
-    if (!input.trim()) return
+  async function sendMessage() {
+    if (!input.trim() || sending) return
     const userMsg = { role: 'user', text: input }
     setMessages((prev) => [...prev, userMsg])
     setInput('')
+    setSending(true)
 
-    // Placeholder response until backend is wired up
-    setTimeout(() => {
+    try {
+      const reply = await sendChatMessage(userMsg.text)
+      setMessages((prev) => [...prev, { role: 'assistant', text: reply }])
+    } catch (err) {
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', text: "I'll be able to answer that properly once I'm connected to live data." },
+        { role: 'assistant', text: "Sorry, I couldn't reach the server. The backend may be waking up — try again in a few seconds." },
       ])
-    }, 600)
+    } finally {
+      setSending(false)
+    }
   }
 
   function handleKeyDown(e) {
@@ -46,6 +53,7 @@ export default function Chat() {
             {m.text}
           </div>
         ))}
+        {sending && <div className="chat-bubble assistant">Statie is thinking...</div>}
         <div ref={bottomRef} />
       </div>
 
@@ -56,8 +64,9 @@ export default function Chat() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask Statie anything..."
+          disabled={sending}
         />
-        <button onClick={sendMessage}><FiSend /></button>
+        <button onClick={sendMessage} disabled={sending}><FiSend /></button>
       </div>
     </div>
   )
