@@ -1,0 +1,36 @@
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Onboarding from './pages/Onboarding.jsx'
+import Home from './pages/Home.jsx'
+import Placeholder from './pages/Placeholder.jsx'
+import Chat from './pages/Chat.jsx'
+import BottomNav from './components/BottomNav.jsx'
+
+function isOnboarded() {
+  return localStorage.getItem('statie_onboarded') === 'true'
+}
+
+function ProtectedLayout({ children }) {
+  if (!isOnboarded()) {
+    return <Navigate to="/onboarding" replace />
+  }
+  return (
+    <>
+      {children}
+      <BottomNav />
+    </>
+  )
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/onboarding" element={<Onboarding />} />
+      <Route path="/" element={<ProtectedLayout><Home /></ProtectedLayout>} />
+      <Route path="/fixtures" element={<ProtectedLayout><Placeholder title="Fixtures" /></ProtectedLayout>} />
+      <Route path="/lineups" element={<ProtectedLayout><Placeholder title="Lineups" /></ProtectedLayout>} />
+      <Route path="/transfers" element={<ProtectedLayout><Placeholder title="Transfers" /></ProtectedLayout>} />
+      <Route path="/betting-tips" element={<ProtectedLayout><Placeholder title="Betting Tips" /></ProtectedLayout>} />
+      <Route path="/chat" element={<ProtectedLayout><Chat /></ProtectedLayout>} />
+    </Routes>
+  )
+}
