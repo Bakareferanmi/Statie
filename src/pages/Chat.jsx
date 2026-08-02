@@ -14,7 +14,7 @@ export default function Chat() {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+  }, [messages, sending])
 
   async function sendMessage() {
     if (!input.trim() || sending) return
@@ -53,7 +53,11 @@ export default function Chat() {
             {m.text}
           </div>
         ))}
-        {sending && <div className="chat-bubble assistant">Statie is thinking...</div>}
+        {sending && (
+          <div className="chat-bubble assistant typing">
+            <span></span><span></span><span></span>
+          </div>
+        )}
         <div ref={bottomRef} />
       </div>
 
